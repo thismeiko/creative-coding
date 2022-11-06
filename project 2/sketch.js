@@ -6,22 +6,25 @@ let video;
 let canvas;
 let detections;
 
-// by default all options are set to true
+// // by default all options are set to true
 const detectionOptions = {
   withLandmarks: true,
   withDescriptors: false,
 };
 
 function setup() {
-  canvas=createCanvas(360, 270);
-  canvas.id("canvas");
+canvas=createCanvas(windowWidth, windowHeight);
+canvas.id("canvas");
+// canvas.position(400,200);
+// canvas.style('z-index','1');
 
-  // load up your video
-  video = createCapture(VIDEO);
-  video.id("video");
-  video.size(width, height);
-  // video.hide(); // Hide the video element, and just show the canvas
-  faceapi = ml5.faceApi(video, detectionOptions, modelReady);
+// load up your video
+translate(width/2-256,height/2-360);
+video = createCapture(VIDEO);
+ video.id("video");
+ video.size(512, 360);
+video.hide(); // Hide the video element, and just show the canvas
+faceapi = ml5.faceApi(video, detectionOptions, modelReady);
 }
 
 function modelReady() {
@@ -40,7 +43,7 @@ function gotResults(err, result) {
 
   // background(220);
   background(255);
-  image(video, 0, 0, width, height);
+  image(video, 0, 0, 512, 360);
   if (detections) {
     if (detections.length > 0) {
       // console.log(detections)
@@ -60,7 +63,7 @@ function drawBox(detections) {
     const boxHeight = alignedRect._box._height;
 
     noFill();
-    stroke(161, 95, 251);
+    stroke('#f3c450');
     strokeWeight(2);
     rect(x, y, boxWidth, boxHeight);
   }
@@ -68,8 +71,8 @@ function drawBox(detections) {
 
 function drawLandmarks(detections) {
   noFill();
-  stroke(161, 95, 251);
-  strokeWeight(2);
+  stroke('#f3c450');
+  strokeWeight(3);
 
   for (let i = 0; i < detections.length; i ++) {
     const mouth = detections[i].parts.mouth;
