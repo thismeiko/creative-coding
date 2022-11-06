@@ -37,6 +37,7 @@ translate(width/2-256,height/2-360);
 video = createCapture(VIDEO);
  video.id("video");
  video.size(512, 360);
+ video.style('border-width','3');
 video.hide(); // Hide the video element, and just show the canvas
 
 faceapi = ml5.faceApi(video, detectionOptions, modelReady);
