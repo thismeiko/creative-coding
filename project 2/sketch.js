@@ -6,7 +6,9 @@ let video;
 let canvas;
 let detections;
 let size = 20;
-
+let noiseRes;
+let offset=0.00001;
+let colors=['#6d2a4f','#d32729','#f4545e'];
 // // by default all options are set to true
 const detectionOptions = {
   withLandmarks: true,
@@ -19,7 +21,7 @@ canvas.id("canvas");
 // canvas.position(400,200);
 // canvas.style('z-index','1');
 // load up your video
-background(255);
+background('#25091c');
 
 // let slider = createSlider(1,200,50);
 // slider.position(10,500);
@@ -41,8 +43,21 @@ faceapi = ml5.faceApi(video, detectionOptions, modelReady);
  push();
  translate(-width/2+256,360-height/2);
 strokeWeight(3);
+noiseRes = random(0.01,0.2);
 for(var x=0; x<width; x+=size){
   for(var y=0; y<height; y+=size){
+    let n=noise((x+offset)*noiseRes,(y+offset)*noiseRes);
+    let a;
+    if(n>0.6){
+      a=colors[0];
+    }
+    else if(n>0.3){
+      a=colors[1];
+    }
+    else{
+      a=colors[2];
+    }
+    stroke(a);
     let c = random(0,3);
     if(c<1){
       line(x,y,x+size,y+size);
@@ -98,7 +113,7 @@ function drawBox(detections) {
     const boxHeight = alignedRect._box._height;
 
     noFill();
-    stroke('#f3c450');
+    stroke('#fd8326');
     strokeWeight(2);
     rect(x, y, boxWidth, boxHeight);
   }
@@ -106,7 +121,7 @@ function drawBox(detections) {
 
 function drawLandmarks(detections) {
   noFill();
-  stroke('#f3c450');
+  stroke('#fd8326');
   strokeWeight(3);
 
   for (let i = 0; i < detections.length; i ++) {
