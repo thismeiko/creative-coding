@@ -5,6 +5,7 @@ let faceapi;
 let video;
 let canvas;
 let detections;
+let size = 20;
 
 // // by default all options are set to true
 const detectionOptions = {
@@ -17,15 +18,49 @@ canvas=createCanvas(windowWidth, windowHeight);
 canvas.id("canvas");
 // canvas.position(400,200);
 // canvas.style('z-index','1');
-
 // load up your video
+background(255);
+
+// let slider = createSlider(1,200,50);
+// slider.position(10,500);
+// slider.style('width','80px');
+// let sliderB = createSlider(1,10,1);
+// sliderB.position(10,580);
+// sliderB.style('width','80px');
+// text('circle size',100,574);
+// text('stroke weight',100,594);
+// textSize(32);
+
 translate(width/2-256,height/2-360);
 video = createCapture(VIDEO);
  video.id("video");
  video.size(512, 360);
 video.hide(); // Hide the video element, and just show the canvas
+
 faceapi = ml5.faceApi(video, detectionOptions, modelReady);
+ push();
+ translate(-width/2+256,360-height/2);
+strokeWeight(3);
+for(var x=0; x<width; x+=size){
+  for(var y=0; y<height; y+=size){
+    let c = random(0,3);
+    if(c<1){
+      line(x,y,x+size,y+size);
+    }
+    else if(c<2){
+      line(x,y+size,x+size,y);
+    }
+    else if (c<3){
+     line(x,y,x,y+size);
+    }
+  }
 }
+pop();
+}
+
+// function draw(){
+//   // let randomSize = slider.value();
+//   }
 
 function modelReady() {
   console.log("ready!");
@@ -42,7 +77,7 @@ function gotResults(err, result) {
   detections = result;
 
   // background(220);
-  background(255);
+ 
   image(video, 0, 0, 512, 360);
   if (detections) {
     if (detections.length > 0) {
@@ -105,3 +140,4 @@ function drawPart(feature, closed) {
     endShape();
   }
 }
+
