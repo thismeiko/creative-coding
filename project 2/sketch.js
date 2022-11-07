@@ -9,6 +9,11 @@ let size = 20;
 let noiseRes;
 let offset=0.00001;
 let colors=['#6d2a4f','#d32729','#f4545e'];
+let saveImage;
+
+function preload(){
+  saveImage = loadImage('images/1.JPG');
+}
 // // by default all options are set to true
 const detectionOptions = {
   withLandmarks: true,
@@ -37,7 +42,7 @@ translate(width/2-256,height/2-360);
 video = createCapture(VIDEO);
  video.id("video");
  video.size(512, 360);
- video.style('border-width','3');
+//  video.style('border-width','3');
 video.hide(); // Hide the video element, and just show the canvas
 
 faceapi = ml5.faceApi(video, detectionOptions, modelReady);
@@ -72,11 +77,10 @@ for(var x=0; x<width; x+=size){
   }
 }
 pop();
+for(var q=0;q<=width; q+=400){
+  image(saveImage,q-500, 450, 250,300);
+  }
 }
-
-// function draw(){
-//   // let randomSize = slider.value();
-//   }
 
 function modelReady() {
   console.log("ready!");
@@ -92,8 +96,7 @@ function gotResults(err, result) {
   // console.log(result)
   detections = result;
 
-  // background(220);
- 
+  // translate(width/2-256,height/2-360);
   image(video, 0, 0, 512, 360);
   if (detections) {
     if (detections.length > 0) {
